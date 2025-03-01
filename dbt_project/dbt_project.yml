@@ -1,0 +1,27 @@
+# Nombre del proyecto en DBT
+name: 'dbt_project'
+version: '1.0.0'
+config-version: 2
+
+# Perfil que DBT usará para conectarse a la base de datos
+profile: 'dbt_project'
+
+# Configuración de rutas de DBT
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+clean-targets:
+  - "target"
+  - "dbt_modules"
+  - "dbt_packages"
+
+# Configuración de modelos
+models:
+  dbt_project:
+    example:
+      +materialized: view
+

@@ -1,0 +1,4 @@
+yfinance
+prefect
+dbt-postgres
+psycopg2-binary
