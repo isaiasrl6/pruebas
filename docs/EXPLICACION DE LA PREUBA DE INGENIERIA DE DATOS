@@ -1,0 +1,58 @@
+## Explicación del Desarrollo del Proyecto de Calidad de Datos
+
+### 1. **Contexto y Objetivo del Proyecto**
+El objetivo del proyecto era diseñar e implementar un **pipeline de calidad de datos** para la Superintendencia de Bancos, permitiendo la extracción, transformación y carga de datos financieros provenientes de **Yahoo Finance** en una base de datos PostgreSQL. Además, se requería validar y transformar estos datos con **DBT** y automatizar la ejecución con **Prefect**, asegurando que el pipeline se ejecutara automáticamente cada 6 horas.
+
+### 2. **Decisiones Clave y Justificación de Herramientas**
+Inicialmente, la prueba sugería utilizar **Airbyte** para la extracción, **Airflow** para la orquestación y **ClickHouse** como almacén OLAP. Sin embargo, al evaluar la compatibilidad con **macOS con chip M1**, se realizaron los siguientes cambios:
+
+- **Airbyte → Reemplazado por Meltano**: Airbyte no tiene soporte estable para Mac con Apple Silicon, por lo que se utilizó **Meltano**, que ofrece conectores compatibles y es más flexible en entornos locales.
+- **Airflow → Reemplazado por Prefect**: Airflow en Docker para Mac suele ser problemático, mientras que **Prefect** es más ligero, más fácil de configurar y mejor integrado con Python.
+- **ClickHouse → Se mantiene**: Se dejó ClickHouse como almacén OLAP ya que su compatibilidad con Docker es buena en Mac.
+
+Este cambio de herramientas permitió garantizar una mejor compatibilidad y una menor fricción en la configuración del entorno de desarrollo.
+
+### 3. **Desarrollo del Pipeline Paso a Paso**
+
+#### **a. Configuración del Entorno**
+1. Se creó un entorno virtual de Python para gestionar las dependencias.
+2. Se configuró **Docker con PostgreSQL y ClickHouse** para manejar los datos.
+3. Se instaló **Meltano** para facilitar la extracción de datos desde Yahoo Finance.
+4. Se configuró **DBT** para realizar validaciones y transformación de datos.
+5. Se instaló **Prefect** para gestionar la automatización del pipeline.
+
+#### **b. Implementación del Pipeline ETL**
+1. **Extracción** (`extract.py`): Se utilizó `yfinance` para obtener los datos históricos de acciones financieras.
+2. **Transformación** (`transform.py`): Se calculó el **precio promedio** y se prepararon los datos para su carga en la base de datos.
+3. **Carga** (`load.py`): Se almacenaron los datos en **PostgreSQL**, en una tabla denominada `stock_data`.
+4. **Automatización** (`prefect_pipeline.py`): Se creó un flujo en Prefect que **verifica si hay nuevos datos y ejecuta `dbt run` si es necesario**.
+5. **Agregación en DBT**: Se creó un modelo SQL en **DBT** (`summary_monthly.sql`) para calcular el **precio y volumen promedio mensual**.
+6. **Ejecución programada**: Se configuró Prefect para ejecutar el pipeline **cada 6 horas automáticamente**.
+
+### 4. **Desafíos y Soluciones**
+Durante el desarrollo se presentaron varios desafíos técnicos:
+
+- **DBT no reconocía `stock_data` como fuente externa**: Se solucionó creando un archivo `sources.yml` para declarar explícitamente la fuente en DBT.
+- **Airbyte no era compatible con Mac M1**: Se reemplazó por **Meltano**, que funciona mejor en este entorno.
+- **Airflow era inestable en Docker**: Se optó por **Prefect**, que es más liviano y flexible.
+- **Errores de conexión a PostgreSQL**: Se corrigieron ajustando `profiles.yml` de DBT y validando credenciales con `psql`.
+
+### 5. **Entrega y Documentación Final**
+Para asegurar la reproducibilidad del proyecto:
+
+1. Se documentó todo el proceso en `README.md`, con instrucciones detalladas para ejecutar el pipeline.
+2. Se creó un **diagrama de arquitectura** (`docs/Pipeline_Arquitectura.png`) mostrando el flujo de datos.
+3. Se configuró un **repositorio en GitHub**, asegurando que el código estuviera bien estructurado y listo para ser ejecutado con Docker.
+4. Se archivó el repositorio en GitHub para evitar modificaciones después de la fecha de entrega.
+
+### 6. **Cómo Explicarlo en una Entrevista**
+Si en una entrevista me preguntan sobre este proyecto, seguiría esta estructura:
+
+1. **Introducción**: Explicar el objetivo del proyecto y el problema que resolvimos.
+2. **Decisiones de Arquitectura**: Justificar por qué cambiamos las herramientas iniciales y cómo impactaron en la solución.
+3. **Explicación Técnica**: Describir cada fase del pipeline (extracción, transformación, carga y automatización).
+4. **Desafíos y Soluciones**: Mencionar los principales problemas encontrados y cómo los resolvimos.
+5. **Entrega y Validación**: Explicar cómo aseguramos que el pipeline fuera reproducible y fácil de ejecutar por cualquier persona.
+
+Esta estructura demostraría **habilidades técnicas, capacidad de resolución de problemas y pensamiento crítico en la toma de decisiones.**
+
