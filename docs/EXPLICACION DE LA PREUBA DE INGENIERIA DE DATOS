@@ -44,15 +44,3 @@ Para asegurar la reproducibilidad del proyecto:
 2. Se creó un **diagrama de arquitectura** (`docs/Pipeline_Arquitectura.png`) mostrando el flujo de datos.
 3. Se configuró un **repositorio en GitHub**, asegurando que el código estuviera bien estructurado y listo para ser ejecutado con Docker.
 4. Se archivó el repositorio en GitHub para evitar modificaciones después de la fecha de entrega.
-
-### 6. **Cómo Explicarlo en una Entrevista**
-Si en una entrevista me preguntan sobre este proyecto, seguiría esta estructura:
-
-1. **Introducción**: Explicar el objetivo del proyecto y el problema que resolvimos.
-2. **Decisiones de Arquitectura**: Justificar por qué cambiamos las herramientas iniciales y cómo impactaron en la solución.
-3. **Explicación Técnica**: Describir cada fase del pipeline (extracción, transformación, carga y automatización).
-4. **Desafíos y Soluciones**: Mencionar los principales problemas encontrados y cómo los resolvimos.
-5. **Entrega y Validación**: Explicar cómo aseguramos que el pipeline fuera reproducible y fácil de ejecutar por cualquier persona.
-
-Esta estructura demostraría **habilidades técnicas, capacidad de resolución de problemas y pensamiento crítico en la toma de decisiones.**
-
