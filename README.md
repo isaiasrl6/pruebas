@@ -1,4 +1,4 @@
-Pipeline de Calidad de Datos - Superintendencia de Bancos
+Pipeline de Calidad de Datos 
 
 Descripcion
 Este proyecto extrae datos financieros de Yahoo Finance, los transforma y los carga en PostgreSQL, automatizando todo el proceso con Prefect y DBT.
